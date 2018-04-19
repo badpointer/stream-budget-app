@@ -1,9 +1,9 @@
-import React from 'react';
-import Budget from '../../models/Budget';
-import BudgetLineItem from '../../models/BudgetLineItem';
-import Summary from '../../models/Summary';
+import React from "react";
+import Budget from "../../models/Budget";
+import BudgetLineItem from "../../models/BudgetLineItem";
+import Summary from "../../models/Summary";
 
-import budgets from './mock-data.js';
+import budgets from "./mock-data.js";
 
 export const BudgetContext = React.createContext();
 
@@ -20,14 +20,14 @@ class BudgetProvider extends React.Component {
 
   updateBudget(budgetName, lineItemName, propertyToUpdate, propertyNewValue) {
     console.log(
-      'updateBudgetCalled with: ',
-      'budgetName: ',
+      "updateBudgetCalled with: ",
+      "budgetName: ",
       budgetName,
-      'lineItemName: ',
+      "lineItemName: ",
       lineItemName,
-      'propertyToUpdate: ',
+      "propertyToUpdate: ",
       propertyToUpdate,
-      'propertyNewValue: ',
+      "propertyNewValue: ",
       propertyNewValue
     );
 
@@ -57,6 +57,14 @@ class BudgetProvider extends React.Component {
     });
   }
 
+  addBudgetItem = item => event => {
+    let copiedBudgets = budgets.map(budget => budget.copy());
+    copiedBudgets.push(new Budget(item));
+    this.setState({
+      budgets: copiedBudgets
+    });
+  };
+
   calculateSummaries = () => {
     const { budgets } = this.state;
     return budgets.map(singleBudget => {
@@ -84,7 +92,8 @@ class BudgetProvider extends React.Component {
         value={{
           budgets: budgets,
           getSummary: this.calculateSummaries,
-          updateBudget: this.updateBudget
+          updateBudget: this.updateBudget,
+          addBudgetItem: this.addBudgetItem
         }}
       >
         {this.props.children}
